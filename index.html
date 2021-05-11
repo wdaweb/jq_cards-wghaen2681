@@ -6,117 +6,97 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
     <style>
-        body {
-            background: black;
-        }
-
-        #game {
-            width: 100vw;
-            height: 100vh;
-
-            /* 以隱藏多出部分來達成全螢幕的奇怪方式 */
-            overflow: hidden;
-        }
-
-        #init-bg {
-            width: 100vw;
-            height: 100vh;
-
-            /* 使用 background-image 比使用 background 更為明確，
-            這樣可以避免之後在 javascript 的地方更改到其他項目，
-            ex. background-size / background-position */
-            background-image: url(./img/pre_game_img/1.jpg);
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
-        }
-
-        #btn-start {
-            width: 98px;
-            height: 40px;
-            background: white;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-33.5%, -50%);
-            text-align: center;
-            line-height: 40px;
-            opacity: 0.6;
-            font-size: 16px;
-        }
-
-        #btn-start:hover {
-            width: 107px;
-            height: 49px;
-            line-height: 49px;
-            font-size: 19px;
-            cursor: pointer;
-            opacity: 0.6;
-            background: red;
-            color: white;
-        }
-
-        .animation {
-            animation-name: animation;
+        .animation_end {
+            animation-name: animation_end;
             animation-duration: 2s;
             /* 
-            ease: 預設值 
-            linear: 維持等速 
-            ease-in: 由慢變快 
-            ease-out; 由快變慢 
-            ease-in-out: 由慢變快，再由快變慢
-             */
+                ease: 預設值 
+                linear: 維持等速 
+                ease-in: 由慢變快 
+                ease-out; 由快變慢 
+                ease-in-out: 由.慢變快，再由快變慢
+                */
             animation-timing-function: linear;
             /* 
-            alternate 交替播放，0 ~ 100% => 100% ~ 0% 
-            alternate-reverse 交替播放，100% ~ 0% => 0% ~ 100% 
-            reverse 反向播放 100% ~ 0%，100% ~ 0% ... 
-            */
+                alternate 交替播放，0 ~ 100% => 100% ~ 0% 
+                alternate-reverse 交替播放，100% ~ 0% => 0% ~ 100% 
+                reverse 反向播放 100% ~ 0%，100% ~ 0% ... 
+                */
             animation-direction: normal;
             /* 
-            撥放後的狀態
-            forwards (保留動畫結束後的樣式)
-            backwords (返回動畫一開始的樣式)
-             */
+                撥放後的狀態
+                forwards (保留動畫結束後的樣式)
+                backwords (返回動畫一開始的樣式)
+                */
             animation-fill-mode: forwards;
         }
 
         /* 建立動畫 Animation */
         /* 步驟一，必須要建一組關鍵影格(keyframes) */
         /* 起始 from(0%)、結束 to(100%) */
-        @keyframes animation {
+        @keyframes animation_end {
             from {
-                transform: scale(1);
                 /* 不能使用背景的大小作為關鍵影格，要使用 transform 調整整個 div 的大小，或許是因為 animation 比較會抓 div */
-                opacity: 1;
-            }
-
-            to {
-                transform: scale(4);
                 opacity: 0;
             }
+            
+            to {
+                opacity: 1;
+            }
+        }
+
+        #frame3 {
+            width: 100%; 
+            height: 100%;
+            background-image: url(./img/aft_game_img/clown_dance.jpg); 
+            background-repeat: no-repeat; 
+            background-size: cover;
+            background-position: center 10%;
+            position: absolute; 
+            left: 0px; 
+            top: 0px; 
+            z-index: 999; 
         }
     </style>
-
 </head>
 
 <body>
-    <div id="game">
-        <div id="init-bg">
-            <div id="btn-start">開始遊戲</div>
-
+    <div id=game style="position: relative;">
+        <div id="frame1">
+            <div id="init-bg">
+                <div id="btn-start">開始遊戲</div>
+            </div>
         </div>
     </div>
 
-
-
+    
 
     <script src="./jquery-3.6.0.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js' integrity='sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==' crossorigin='anonymous'></script>
+    <script></script>
     <script>
         $('#btn-start').click(() => {
             $('#init-bg').addClass('animation')
 
+            // $('#init-bg').animate({
+            //     opacity:'0',
+            //     transform:'scale(4)'
+            // },2000,function(){
+            //     for (let i = 0; i < 15; i++) {
+            //         $('#frame2').append(`
+            //         <div class="card" data-card=${i}>
+            //         <div class="card-back"></div>
+            //         <div class="card-front" ></div>
+            //         </div>
+            //         `)
+            //         if (i == rand) { 
+            //             $('.card-front').addClass('winner') 
+            //         }
+            //     }
+
+            // })
             $('#btn-start').hide()
             $('#btn-start').css({
                 'user-select': 'none',
@@ -124,23 +104,96 @@
                 'pointer-events': 'none'
             })
 
-        })
+            // 加上 frame2 
+            $('#game').append(`
+            <div id="frame2"></div>
+            `)
 
+            // 設定隨機指定卡片是贏家 
+            let rand = Math.round(Math.random()*15)
+            let winX = rand % 5
+            let winY = Math.floor(rand / 5)
+            console.log(rand, winX, winY) 
 
+            // 產生 15 張卡片（於開始動畫播放完畢後顯示） 
+            setTimeout(function(){
+                // 產生 15 張卡片（於開始動畫播放完畢後顯示） 
+                for (let i = 0; i < 15; i++) {
+                    $('#frame2').append(`
+                    <div class="card" data-card=${i}>
+                    <div class="card-back"></div>
+                    <div class="card-front" ></div>
+                    </div>
+                    `)
+                    // 為指定卡片加上贏家標籤 
+                    if (i == rand) { 
+                        $('.card-front').eq(i).addClass('winner')
+                    }
+                }
+                // 加上蠟燭動圖 
+                $('#game').append(`
+                    <img src="./img/mid_game_img/1.gif" alt="candle" id="candle">
+                `)
+            },2500)
 
+            // 設定點擊卡片的程式碼 
+            $('#frame2').on('click', '.card', function () {
+                
+                // 判斷點擊的卡片是否為贏家 
+                // console.log($(this).children( ".card-front" ))
+                // console.log($(this).children( ".card-front").attr("class"))
 
-        // 在遊戲開始前更換遊戲背景 
-        // let timer = 0
-        // let n = 2
-        // timer = setInterval(() => {
-        //     $('body').css('background-image', `url(./img/pre_game_img/${n}.jpg)`)
-        //     n++
-        //     if (n > 3) {
-        //         clearInterval(timer)
-        //     }
-        // }, 2000)
+                // 如果點擊的是贏家卡片 
+                if ($(this).children( ".card-front" ).hasClass('winner')) { 
+                    console.log('winner') 
+                    $('#game').append(`<div id="frame3" class="animation_end"></div>`)
+                    // console.log($('#game').hasClass('animation_end'))
+                    // console.log($('#game').attr("class"))
+                    // $('#game').click(() => {
+                    //     $('#game').append(`<div id="frame3"></div>`)   
+                    // }) 
+                // 如果點擊的不是贏家卡片 
+                } else { 
+                    // 為卡片加上翻牌動畫 
+                    $(this).find('.card-front').addClass('card-open')
+                    
+                    // 尋找卡片索引值 
+                    // console.log($(this).attr('data-card')) 
+
+                    // 透過卡片索引值計算對應位置 
+                    const posX = $(this).attr('data-card') % 5
+                    const posY = Math.floor($(this).attr('data-card') / 5)
+                    // console.log(posX, posY) 
+
+                    // 計算卡片位置與贏家卡片位置差距值 
+                    const del = Math.sqrt((posX - winX)**2) + Math.sqrt((posY - winY)**2)
+                    console.log(del)
+
+                    // 針對差距值做動畫分級 
+                    if (del > 5) { 
+                        conosle.log('you lose') 
+                    } else if (del === 4) { 
+                        console.log('gonna lose 3') 
+                    } else if (del === 3) { 
+                        console.log('gonna lose 2') 
+                    } else if (del === 2) { 
+                        console.log('gonna lose 1') 
+                    } else if (del <= 0) { 
+                        console.log('you win') 
+                    }
+                }
+                
+                // 指定卡片於翻牌一秒後恢復原狀 
+                setTimeout(() => {
+                    $('.card-open').removeClass('card-open')
+                }, 1000);
+            })
+        }) 
     </script>
 
 </body>
 
 </html>
+
+
+

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        #main {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- fail:why -->
+    <!-- <video controls autoplay>
+        <source src="YOU DIED (HD).mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video> -->
+
+    <div id="main">
+        <!-- 
+            老師說如果要在載入頁面時就自動播放一定要使用靜音，
+            但是老師覺得我需要的效果不需要使用到自動播放，
+            只要在遊戲輸了以後利用 .play() 觸發 video 就好。
+         -->
+        <video controls autoplay muted width="100%" height="100%">
+            <source src="YOU DIED (HD).mp4">
+        </video>
+    </div>
+
+</body>
+
+</html>
