@@ -46,32 +46,21 @@
                 opacity: 1;
             }
         }
-
-        #frame3 {
-            width: 100%; 
-            height: 100%;
-            background-image: url(./img/aft_game_img/clown_dance.jpg); 
-            background-repeat: no-repeat; 
-            background-size: cover;
-            background-position: center 10%;
-            position: absolute; 
-            left: 0px; 
-            top: 0px; 
-            z-index: 999; 
-        }
     </style>
 </head>
 
 <body>
+    
     <div id=game style="position: relative;">
         <div id="frame1">
             <div id="init-bg">
                 <div id="btn-start">開始遊戲</div>
             </div>
         </div>
+        <audio controls loop hidden id="audio1">
+            <source src="IT.mp3"> 
+        </audio>
     </div>
-
-    
 
     <script src="./jquery-3.6.0.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js' integrity='sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==' crossorigin='anonymous'></script>
@@ -80,23 +69,6 @@
         $('#btn-start').click(() => {
             $('#init-bg').addClass('animation')
 
-            // $('#init-bg').animate({
-            //     opacity:'0',
-            //     transform:'scale(4)'
-            // },2000,function(){
-            //     for (let i = 0; i < 15; i++) {
-            //         $('#frame2').append(`
-            //         <div class="card" data-card=${i}>
-            //         <div class="card-back"></div>
-            //         <div class="card-front" ></div>
-            //         </div>
-            //         `)
-            //         if (i == rand) { 
-            //             $('.card-front').addClass('winner') 
-            //         }
-            //     }
-
-            // })
             $('#btn-start').hide()
             $('#btn-start').css({
                 'user-select': 'none',
@@ -113,7 +85,7 @@
             let rand = Math.round(Math.random()*15)
             let winX = rand % 5
             let winY = Math.floor(rand / 5)
-            console.log(rand, winX, winY) 
+            console.log('贏家卡片位在', '第', rand, ',x:', winX, ',y:', winY) 
 
             // 產生 15 張卡片（於開始動畫播放完畢後顯示） 
             setTimeout(function(){
@@ -136,6 +108,14 @@
                 `)
             },2500)
 
+            const audio = document.getElementById('audio1')
+            const timer = setInterval(() => {
+                audio.play().then(() => {
+                    clearInterval(timer)
+                }).catch(() => {
+                })
+            }, 100)
+
             // 設定點擊卡片的程式碼 
             $('#frame2').on('click', '.card', function () {
                 
@@ -146,12 +126,7 @@
                 // 如果點擊的是贏家卡片 
                 if ($(this).children( ".card-front" ).hasClass('winner')) { 
                     console.log('winner') 
-                    $('#game').append(`<div id="frame3" class="animation_end"></div>`)
-                    // console.log($('#game').hasClass('animation_end'))
-                    // console.log($('#game').attr("class"))
-                    // $('#game').click(() => {
-                    //     $('#game').append(`<div id="frame3"></div>`)   
-                    // }) 
+                    $('#game').append(`<div id="frame_end" class="clown_dance"></div>`)
                 // 如果點擊的不是贏家卡片 
                 } else { 
                     // 為卡片加上翻牌動畫 
@@ -170,16 +145,42 @@
                     console.log(del)
 
                     // 針對差距值做動畫分級 
-                    if (del > 5) { 
-                        conosle.log('you lose') 
+                    if (del >= 5) { 
+                        console.log('you lose') 
+                        $('#frame2').remove()
+                        $('#candle').remove() 
+
+                        $('#game').append(`
+                        <div id="frame_end">
+                            <video controls autoplay muted width="100%" height="100%">
+                                <source src="YOU DIED (HD).mp4">
+                            </video>
+                        </div>       
+                        `)
                     } else if (del === 4) { 
                         console.log('gonna lose 3') 
+                        $('#game').append('<div id="frame_end" class="scream"></div>')
+
+                        setTimeout(() => {
+                            $('#frame_end').remove()
+                        }, 1000);
                     } else if (del === 3) { 
                         console.log('gonna lose 2') 
+                        $('#game').append('<div id="frame_end" class="clown"></div>')
+
+                        setTimeout(() => {
+                            $('#frame_end').remove()
+                        }, 1000);
                     } else if (del === 2) { 
                         console.log('gonna lose 1') 
+                        $('#game').append('<div id="frame_end" class="door"></div>')
+
+                        setTimeout(() => {
+                            $('#frame_end').remove()
+                        }, 1000);
                     } else if (del <= 0) { 
                         console.log('you win') 
+                        $('#game').append('<div class="frame_end clown_dance"></div>')
                     }
                 }
                 

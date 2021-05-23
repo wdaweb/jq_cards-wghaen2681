@@ -98,7 +98,7 @@ body {
   z-index: 90;
 }
 
-.frame2_animation { 
+.frame2_animation {
   animation-name: candle_animation;
   animation-duration: 600ms;
   animation-timing-function: linear;
@@ -160,19 +160,35 @@ body {
 }
 
 .card-open {
-  opacity: 1; 
+  opacity: 1;
 }
 
-#frame3 {
-  width: 100vw; 
+#frame_end {
+  width: 100vw;
   height: 100vh;
-  background-image: url(./img/aft_game_img/clown_dance.jpg); 
-  background-repeat: no-repeat; 
+  background-repeat: no-repeat;
   background-size: cover;
   background-position: center 10%;
-  position: absolute; 
-  left: 0px; 
-  top: 0px; 
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 100;
+}
+
+.door {
+  background-image: url(./img/mid_game_img/door.jpg);
+}
+
+.clown {
+  background-image: url(./img/mid_game_img/clown.jpeg);
+}
+
+.scream {
+  background-image: url(./img/mid_game_img/scream.jpg);
+}
+
+.clown_dance {
+  background-image: url(./img/aft_game_img/clown_dance.jpg);
 }
 
 .animation_end {
@@ -205,11 +221,11 @@ body {
 /* 起始 from(0%)、結束 to(100%) */
 @keyframes animation_end {
   from {
-      /* 不能使用背景的大小作為關鍵影格，要使用 transform 調整整個 div 的大小，或許是因為 animation 比較會抓 div */
-      opacity: 0;
+    /* 不能使用背景的大小作為關鍵影格，要使用 transform 調整整個 div 的大小，或許是因為 animation 比較會抓 div */
+    opacity: 0;
   }
-  
+
   to {
-      opacity: 1;
+    opacity: 1;
   }
 }
